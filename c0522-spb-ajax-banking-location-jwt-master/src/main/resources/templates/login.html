@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<!-- === Coding by CodingLab | www.codinglabweb.com === -->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/iziToast/v1.4.0/iziToast-1.4.0.min.css">
+    <!-- ===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/assets/css/login.css">
+
+
+    <!--<title>Login & Registration Form</title>-->
+
+</head>
+<body>
+
+<div class="container">
+    <div class="forms">
+        <div class="form login">
+            <span class="title">Login</span>
+
+            <form >
+                <div class="input-field">
+                    <input id="emailLogin" type="text" placeholder="Enter your email" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <div class="input-field">
+                    <input id="passwordLogin" type="password" class="password" placeholder="Enter your password" required>
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+
+                <div class="checkbox-text">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="logCheck">
+                        <label for="logCheck" class="text">Remember me</label>
+                    </div>
+
+                    <a href="#" class="text">Forgot password?</a>
+                </div>
+
+                <div class="input-field button">
+                    <input id="btnLogin"  value="Login" readonly>
+                </div>
+            </form>
+
+            <div class="login-signup">
+                    <span class="text">Not a member?
+                        <a href="#" class="text signup-link">Signup Now</a>
+                    </span>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form signup">
+            <span class="title">Registration</span>
+
+            <form>
+<!--                <div class="input-field">-->
+<!--                    <input type="text" placeholder="Enter your name" required>-->
+<!--                    <i class="uil uil-user"></i>-->
+<!--                </div>-->
+                <div class="input-field">
+                    <input id="emailRegister" type="text" placeholder="Enter your email" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <div class="input-field">
+                    <input id="passwordRegister" type="password" class="password" placeholder="Create a password" required>
+                    <i class="uil uil-lock icon"></i>
+                </div>
+<!--                <div class="input-field">-->
+<!--                    <input id="confirmPasswordRegister" type="password" class="password" placeholder="Confirm a password" required>-->
+<!--                    <i class="uil uil-lock icon"></i>-->
+<!--                    <i class="uil uil-eye-slash showHidePw"></i>-->
+<!--                </div>-->
+                <select id="roleRes" class="form-select form-select-sm" aria-label=".form-select-sm example" style="margin-top: 12px;width: 110px">
+                    <option selected disabled>ROLE</option>
+                    <option value="1">ADMIN</option>
+                    <option value="3">USER</option>
+                </select>
+
+                <div class="checkbox-text">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="termCon">
+                        <label for="termCon" class="text">I accepted all terms and conditions</label>
+                    </div>
+                </div>
+
+                <div class="input-field button">
+                    <input id="btnRegister" value="Signup" readonly>
+                </div>
+            </form>
+
+            <div class="login-signup">
+                    <span class="text">Already a member?
+                        <a href="#" class="text login-link">Login Now</a>
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/jquery/jquery-v3.6.0.min.js"></script>
+<script type="text/javascript" src="/assets/iziToast/v1.4.0/iziToast-1.4.0.js"></script>
+<script src="/assets/js/app.js"></script>
+
+<!--<script src="script.js"></script>-->
+<script>
+    //page
+    const page = {
+        urls: {
+            login: App.BASE_URL_AUTH + "/login",
+            register: App.BASE_URL_AUTH + "/register"
+        },
+        elements: {},
+        commands: {},
+        initializeEventControl: {}
+    }
+
+    page.elements.emailLogin = $("#emailLogin");
+    page.elements.passwordLogin = $("#passwordLogin");
+    page.elements.btnLogin = $("#btnLogin");
+
+    page.elements.emailRegister = $("#emailRegister");
+    page.elements.passwordRegister = $("#passwordRegister");
+    page.elements.confirmPasswordRegister = $("#confirmPasswordRegister");
+    page.elements.roleRes = $("#roleRes");
+    page.elements.btnRegister = $("#btnRegister");
+
+
+
+    const container = document.querySelector(".container"),
+        pwShowHide = document.querySelectorAll(".showHidePw"),
+        pwFields = document.querySelectorAll(".password"),
+        signUp = document.querySelector(".signup-link"),
+        login = document.querySelector(".login-link");
+
+    //   js code to show/hide password and change icon
+    pwShowHide.forEach(eyeIcon =>{
+        eyeIcon.addEventListener("click", ()=>{
+            pwFields.forEach(pwField =>{
+                if(pwField.type ==="password"){
+                    pwField.type = "text";
+
+                    pwShowHide.forEach(icon =>{
+                        icon.classList.replace("uil-eye-slash", "uil-eye");
+                    })
+                }else{
+                    pwField.type = "password";
+
+                    pwShowHide.forEach(icon =>{
+                        icon.classList.replace("uil-eye", "uil-eye-slash");
+                    })
+                }
+            })
+        })
+    })
+
+   // js code to appear signup and login form
+    signUp.addEventListener("click", ( )=>{
+        container.classList.add("active");
+    });
+    login.addEventListener("click", ( )=>{
+        container.classList.remove("active");
+    });
+
+    //login
+    page.commands.login = () => {
+        let user = {
+            "username": page.elements.emailLogin.val(),
+            "password": page.elements.passwordLogin.val()
+        }
+
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: page.urls.login,
+            data: JSON.stringify(user)
+        })
+            .done(() => {
+                App.IziToast.showSuccessAlert("Login successful");
+
+                setTimeout(() => {
+                    window.location.href = "/customers";
+                }, 1500)
+            })
+            .fail(() => {
+                App.IziToast.showErrorAlert("Login fail");
+            })
+    }
+
+    page.initializeEventControl = () => {
+        page.elements.btnLogin.on("click", () => {
+            page.commands.login();
+        })
+        page.elements.btnRegister.on("click", () => {
+            page.commands.register();
+        })
+    }
+
+    //register
+    page.commands.register = () => {
+        let user = {
+            "username": page.elements.emailRegister.val(),
+            "password": page.elements.passwordRegister.val(),
+            // "confirmPassword" : page.elements.confirmPasswordRegister.val(),
+            role: {
+                id: page.elements.roleRes.val()
+            }
+        }
+
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: page.urls.register,
+            data: JSON.stringify(user)
+        })
+            .done(() => {
+                App.IziToast.showSuccessAlert("Register successful");
+
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 1500)
+            })
+            .fail(() => {
+                App.IziToast.showErrorAlert("Register fail");
+            })
+    }
+
+
+    $(() => {
+        // page.initializeEventControl.login();
+        page.initializeEventControl();
+    })
+
+
+
+</script>
+</body>
+</html>
+
